@@ -5,7 +5,8 @@
   import CheckerWhite from "./CheckerWhite.svelte";
   import CheckerRed from "./CheckerRed.svelte";
   import {
-    DEFAULT_BOARD,
+    BOARD_PLAYER_1,
+    BOARD_PLAYER_2,
     BLANK_TILE,
     COORDS_KEY_X,
     COORDS_KEY_Y,
@@ -14,10 +15,10 @@
   // subs
   let board: number[][] = [];
   const unsubPlayer1 = IS_PLAYER_1.subscribe((value) => {
-    board = DEFAULT_BOARD.slice().reverse();
+    if (value) board = BOARD_PLAYER_1;
   });
   const unsubPlayer2 = IS_PLAYER_2.subscribe((value) => {
-    board = DEFAULT_BOARD;
+    if (value) board = BOARD_PLAYER_2;
   });
   onDestroy(unsubPlayer1);
   onDestroy(unsubPlayer2);
@@ -33,10 +34,10 @@
     // do nothing, player has not moved
     // TODO: consider whether this should be considered touching a piece?
     // if (fromX === x && fromY === y) return;
-    
+
     // standard move
     let standardX = fromX === x + 1;
-    let standardY = (fromY === y - 1 || fromY === y + 1);
+    let standardY = fromY === y - 1 || fromY === y + 1;
     let standardClear = board[x][y] === BLANK_TILE;
 
     // TODO:
@@ -44,7 +45,7 @@
 
     // TODO:
     // king move
-    
+
     if (standardX && standardY && standardClear) {
       let temp = board[fromX][fromY];
       board[fromX][fromY] = board[x][y];
@@ -52,7 +53,7 @@
     } else {
       return;
     }
-    console.log(board)
+    console.log(board);
   };
 </script>
 
