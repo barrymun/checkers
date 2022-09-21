@@ -15,3 +15,4 @@ export const DEFAULT_BOARD: number[][] = [
 ];
 export const COORDS_KEY_X: string = "X_POS";
 export const COORDS_KEY_Y: string = "Y_POS";
+export const WEBSOCKET_URI_DEV: string = "ws://127.0.0.1:5173";
