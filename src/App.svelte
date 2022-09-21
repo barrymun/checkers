@@ -16,9 +16,7 @@
   }
 
   function setPlayer() {
-    // let player = assignPlayer();
-    // if (player === PLAYER_1) IS_PLAYER_1.update((n) => true);
-    // else if (player === PLAYER_2) IS_PLAYER_2.update((n) => true);
+    // TODO: decide who the player is based on the order they appear in the room
     IS_PLAYER_1.update((n) => true);
     IS_PLAYER_2.update((n) => false);
   }
