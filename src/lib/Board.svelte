@@ -25,18 +25,20 @@
   };
 </script>
 
-<div class="h-screen">
-  {#each board as row, x}
-    <div class="grid grid-cols-8 grid-rows-8 h-[calc(100%/8)]">
-      {#each row as col, y}
-        <Tile tileColor={getTileColor(x, y)}>
-          {#if col == 1}
-            <CheckerWhite />
-          {:else if col == 2}
-            <CheckerRed />
-          {/if}
-        </Tile>
-      {/each}
-    </div>
-  {/each}
+<div class="flex justify-center content-center">
+  <div class="h-screen w-[100vh] p-2">
+    {#each board as row, x}
+      <div class="grid grid-cols-8 grid-rows-8 h-[calc(100%/8)]">
+        {#each row as col, y}
+          <Tile tileColor={getTileColor(x, y)}>
+            {#if col == 1}
+              <CheckerWhite />
+            {:else if col == 2}
+              <CheckerRed />
+            {/if}
+          </Tile>
+        {/each}
+      </div>
+    {/each}
+  </div>
 </div>
