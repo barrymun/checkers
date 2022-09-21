@@ -4,6 +4,8 @@
   import Tile from "./Tile.svelte";
   import CheckerWhite from "./CheckerWhite.svelte";
   import CheckerRed from "./CheckerRed.svelte";
+  import CheckerKingWhite from "./CheckerKingWhite.svelte";
+  import CheckerKingRed from "./CheckerKingRed.svelte";
   import {
     BOARD_PLAYER_1,
     BOARD_PLAYER_2,
@@ -88,10 +90,14 @@
       <div class="grid grid-cols-8 grid-rows-8 h-[calc(100%/8)]">
         {#each row as col, y}
           <Tile onDrop={onDrop(x, y)} {x} {y}>
-            {#if col == 1}
-              <CheckerWhite {x} {y} />
-            {:else if col == 2}
-              <CheckerRed {x} {y} />
+            {#if col === CHECKER_WHITE}
+              <CheckerWhite isDraggable={isPlayer2} {x} {y} />
+            {:else if col === CHECKER_RED}
+              <CheckerRed isDraggable={isPlayer1} {x} {y} />
+            {:else if col === CHECKER_KING_WHITE}
+              <CheckerKingWhite isDraggable={isPlayer2} {x} {y} />
+            {:else if col === CHECKER_KING_RED}
+              <CheckerKingRed isDraggable={isPlayer1} {x} {y} />
             {/if}
           </Tile>
         {/each}

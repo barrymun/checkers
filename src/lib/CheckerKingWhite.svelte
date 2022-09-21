@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CHECKER_WHITE } from "../constants";
+  import { CHECKER_KING_WHITE } from "../constants";
   import Checker from "./Checker.svelte";
 
   // props
@@ -8,4 +8,4 @@
   export let y: number;
 </script>
 
-<Checker type={CHECKER_WHITE} {isDraggable} {x} {y} />
+<Checker type={CHECKER_KING_WHITE} isDraggable={isDraggable} {x} {y} />

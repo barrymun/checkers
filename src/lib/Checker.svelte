@@ -1,6 +1,9 @@
 <script lang="ts">
   import {
     CHECKER_WHITE,
+    CHECKER_RED,
+    CHECKER_KING_WHITE,
+    CHECKER_KING_RED,
     COORDS_KEY_X,
     COORDS_KEY_Y,
   } from "../constants";
@@ -11,8 +14,24 @@
   export let x: number;
   export let y: number;
 
-  const checkerColor: string =
-    type === CHECKER_WHITE ? "bg-white" : "bg-red-600";
+  let checkerColor: string = "";
+
+  switch (type) {
+    case CHECKER_WHITE:
+      checkerColor = "bg-white";
+      break;
+    case CHECKER_RED:
+      checkerColor = "bg-red-600";
+      break;
+    case CHECKER_KING_WHITE:
+      checkerColor = "bg-slate-100";
+      break;
+    case CHECKER_KING_RED:
+      checkerColor = "bg-red-900";
+      break;
+    default:
+      break;
+  }
 
   const onDragStart = (e: DragEvent) => {
     if (isDraggable) {
