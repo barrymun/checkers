@@ -8,17 +8,29 @@
     BOARD_PLAYER_1,
     BOARD_PLAYER_2,
     BLANK_TILE,
+    CHECKER_RED,
+    CHECKER_WHITE,
+    CHECKER_KING_RED,
+    CHECKER_KING_WHITE,
     COORDS_KEY_X,
     COORDS_KEY_Y,
   } from "../constants";
 
   // subs
+  let isPlayer1: boolean = false;
+  let isPlayer2: boolean = false;
   let board: number[][] = [];
   const unsubPlayer1 = IS_PLAYER_1.subscribe((value) => {
-    if (value) board = BOARD_PLAYER_1;
+    if (value) {
+      isPlayer1 = true;
+      board = BOARD_PLAYER_1;
+    }
   });
   const unsubPlayer2 = IS_PLAYER_2.subscribe((value) => {
-    if (value) board = BOARD_PLAYER_2;
+    if (value) {
+      isPlayer2 = true;
+      board = BOARD_PLAYER_2;
+    }
   });
   onDestroy(unsubPlayer1);
   onDestroy(unsubPlayer2);
@@ -35,7 +47,18 @@
     // TODO: consider whether this should be considered touching a piece?
     // if (fromX === x && fromY === y) return;
 
+    let piece = board[fromX][fromY];
     let spaceClear = board[x][y] === BLANK_TILE;
+    let isKing = piece === CHECKER_KING_RED || piece === CHECKER_KING_WHITE;
+
+    // make king (special case)
+    let checkCanMakeKing = x === 0;
+    if (checkCanMakeKing && spaceClear && !isKing) {
+      board[fromX][fromY] = board[x][y];
+      if (isPlayer1) board[x][y] = CHECKER_KING_RED;
+      else if (isPlayer2) board[x][y] = CHECKER_KING_WHITE;
+      return;
+    }
 
     // standard move
     let standardX = fromX === x + 1;
@@ -45,17 +68,12 @@
     let jumpX = fromX === x + 2;
     let jumpY = fromY === y - 2 || fromY === y + 2;
 
-    // TODO:
-    // king crown + move
-
-    if (standardX && standardY && spaceClear) {
-      let temp = board[fromX][fromY];
+    if (standardX && standardY && spaceClear && !isKing) {
       board[fromX][fromY] = board[x][y];
-      board[x][y] = temp;
-    } else if (jumpX && jumpY && spaceClear) {
-      let temp = board[fromX][fromY];
+      board[x][y] = piece;
+    } else if (jumpX && jumpY && spaceClear && !isKing) {
       board[fromX][fromY] = board[x][y];
-      board[x][y] = temp;
+      board[x][y] = piece;
       board[(fromX + x) / 2][(fromY + y) / 2] = BLANK_TILE;
     } else {
       return;
