@@ -16,7 +16,7 @@
     [0, 2, 0, 2, 0, 2, 0, 2],
     [2, 0, 2, 0, 2, 0, 2, 0],
   ];
-  console.log(board);
+  // console.log(board);
 
   const getTileColor = (x: number, y: number): string => {
     if ((x % 2 == 0 && y % 2 == 0) || (x % 2 != 0 && y % 2 != 0))
