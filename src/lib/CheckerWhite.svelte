@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
   import { IS_PLAYER_1 } from "../stores";
-  import { CHECKER_WHITE } from "../assets/constants";
+  import { CHECKER_WHITE } from "../constants";
   import Checker from "./Checker.svelte";
 
   // props

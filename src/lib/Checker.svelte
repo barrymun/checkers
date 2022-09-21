@@ -3,7 +3,7 @@
     CHECKER_WHITE,
     COORDS_KEY_X,
     COORDS_KEY_Y,
-  } from "../assets/constants";
+  } from "../constants";
 
   // props
   export let type: number;

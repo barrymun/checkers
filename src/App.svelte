@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { PLAYER_1, PLAYER_2 } from "./assets/constants";
+  import { PLAYER_1, PLAYER_2 } from "./constants";
   import { IS_PLAYER_1, IS_PLAYER_2 } from "./stores";
   import Board from "./lib/Board.svelte";
 

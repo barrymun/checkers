@@ -9,7 +9,7 @@
     BLANK_TILE,
     COORDS_KEY_X,
     COORDS_KEY_Y,
-  } from "../assets/constants";
+  } from "../constants";
 
   // subs
   let board: number[][] = [];
