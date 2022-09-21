@@ -11,7 +11,12 @@
     type === CHECKER_WHITE ? "bg-white" : "bg-red-600";
 
   const onDragStart = (e: DragEvent) => {
-    console.log("onDragStart", e);
+    if (isDraggable) {
+      console.log("onDragStart", e);
+    } else {
+      // for use with draggable=false
+      e.preventDefault();
+    }
   };
 </script>
 

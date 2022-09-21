@@ -9,12 +9,12 @@
 
   const onDragOver = (e: DragEvent) => {
     e.preventDefault();
-    console.log("onDragOver", e);
+    // console.log("onDragOver", e);
   };
 
   const onDrop = (e: DragEvent) => {
     e.preventDefault();
-    console.log("onDrop", e);
+    console.log(x, y);
   };
 </script>
 
