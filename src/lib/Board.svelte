@@ -28,6 +28,23 @@
     let fromY = parseInt(e.dataTransfer.getData(COORDS_KEY_Y));
     console.log(fromX, fromY);
     console.log(x, y);
+    
+    // standard move
+    let standardX = fromX === x + 1;
+    let standardY = (fromY === y - 1 || fromY === y + 1);
+
+    // TODO:
+    // capture move (+ all valid moves in a single movement)
+
+    // TODO:
+    // king move
+    
+    if (standardX && standardY) {
+      let temp = board[fromX][fromY];
+      board[fromX][fromY] = board[x][y];
+      board[x][y] = temp;
+    }
+    console.log(board)
   };
 </script>
 
