@@ -10,7 +10,6 @@
     // get the room
     const params = new URLSearchParams(window.location.search);
     const roomId = params.get("roomId");
-    console.log(roomId);
     
     // TODO
     // establish the websocket connection to the server
@@ -33,8 +32,5 @@
 </script>
 
 <main>
-  <button on:click={() => socket.send('TEST')}>
-    MSG
-  </button>
   <Board />
 </main>
