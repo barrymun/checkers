@@ -4,8 +4,9 @@
   import Tile from "./Tile.svelte";
   import CheckerWhite from "./CheckerWhite.svelte";
   import CheckerRed from "./CheckerRed.svelte";
-  import { DEFAULT_BOARD } from "../assets/constants";
+  import { DEFAULT_BOARD, COORDS_KEY_X, COORDS_KEY_Y } from "../assets/constants";
 
+  // subs
   let board: number[][] = [];
   const unsubPlayer1 = IS_PLAYER_1.subscribe((value) => {
     board = DEFAULT_BOARD.slice().reverse();
@@ -15,6 +16,15 @@
   });
   onDestroy(unsubPlayer1);
   onDestroy(unsubPlayer2);
+
+  // 
+  const onDrop = (x: number, y: number) => (e: DragEvent) => {
+    e.preventDefault();
+    let fromX = parseInt(e.dataTransfer.getData(COORDS_KEY_X));
+    let fromY = parseInt(e.dataTransfer.getData(COORDS_KEY_Y));
+    console.log(fromX, fromY);
+    console.log(x, y);
+  };
 </script>
 
 <div class="flex justify-center content-center">
@@ -22,7 +32,7 @@
     {#each board as row, x}
       <div class="grid grid-cols-8 grid-rows-8 h-[calc(100%/8)]">
         {#each row as col, y}
-          <Tile {x} {y}>
+          <Tile onDrop={onDrop(x, y)} {x} {y}>
             {#if col == 1}
               <CheckerWhite {x} {y} />
             {:else if col == 2}
