@@ -1,5 +1,11 @@
 <script lang="ts">
-  export let tileColor: string;
+  export let x: number;
+  export let y: number;
+
+  const tileColor: string =
+    (x % 2 == 0 && y % 2 == 0) || (x % 2 != 0 && y % 2 != 0)
+      ? "bg-green-100"
+      : "bg-green-300";
 
   const onDragOver = (e: DragEvent) => {
     e.preventDefault();
