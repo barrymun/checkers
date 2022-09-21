@@ -35,21 +35,28 @@
     // TODO: consider whether this should be considered touching a piece?
     // if (fromX === x && fromY === y) return;
 
+    let spaceClear = board[x][y] === BLANK_TILE;
+
     // standard move
     let standardX = fromX === x + 1;
     let standardY = fromY === y - 1 || fromY === y + 1;
-    let standardClear = board[x][y] === BLANK_TILE;
+
+    // capture (jump)
+    let jumpX = fromX === x + 2;
+    let jumpY = fromY === y - 2 || fromY === y + 2;
 
     // TODO:
-    // capture move (+ all valid moves in a single movement)
+    // king crown + move
 
-    // TODO:
-    // king move
-
-    if (standardX && standardY && standardClear) {
+    if (standardX && standardY && spaceClear) {
       let temp = board[fromX][fromY];
       board[fromX][fromY] = board[x][y];
       board[x][y] = temp;
+    } else if (jumpX && jumpY && spaceClear) {
+      let temp = board[fromX][fromY];
+      board[fromX][fromY] = board[x][y];
+      board[x][y] = temp;
+      board[(fromX + x) / 2][(fromY + y) / 2] = BLANK_TILE;
     } else {
       return;
     }
