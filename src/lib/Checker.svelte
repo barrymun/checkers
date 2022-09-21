@@ -1,7 +1,9 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
-  import { CHECKER_WHITE, CHECKER_RED, COORDS_KEY_X, COORDS_KEY_Y } from "../assets/constants";
-  import { IS_PLAYER_1, IS_PLAYER_2 } from "../stores";
+  import {
+    CHECKER_WHITE,
+    COORDS_KEY_X,
+    COORDS_KEY_Y,
+  } from "../assets/constants";
 
   // props
   export let type: number;

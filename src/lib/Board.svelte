@@ -4,7 +4,11 @@
   import Tile from "./Tile.svelte";
   import CheckerWhite from "./CheckerWhite.svelte";
   import CheckerRed from "./CheckerRed.svelte";
-  import { DEFAULT_BOARD, COORDS_KEY_X, COORDS_KEY_Y } from "../assets/constants";
+  import {
+    DEFAULT_BOARD,
+    COORDS_KEY_X,
+    COORDS_KEY_Y,
+  } from "../assets/constants";
 
   // subs
   let board: number[][] = [];
@@ -17,7 +21,7 @@
   onDestroy(unsubPlayer1);
   onDestroy(unsubPlayer2);
 
-  // 
+  //
   const onDrop = (x: number, y: number) => (e: DragEvent) => {
     e.preventDefault();
     let fromX = parseInt(e.dataTransfer.getData(COORDS_KEY_X));
