@@ -14,7 +14,6 @@
 
   const onDragStart = (e: DragEvent) => {
     if (isDraggable) {
-      // console.log("onDragStart", e);
       e.dataTransfer.setData(COORDS_KEY_X, x.toString());
       e.dataTransfer.setData(COORDS_KEY_Y, y.toString());
     } else {
