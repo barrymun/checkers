@@ -2,4 +2,4 @@
   import Checker from "./Checker.svelte";
 </script>
 
-<Checker checkerColor="bg-white"/>
+<Checker type={1}/>
