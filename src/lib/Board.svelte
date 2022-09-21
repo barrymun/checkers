@@ -40,7 +40,7 @@
   //
   const onDrop = (x: number, y: number) => (e: DragEvent) => {
     e.preventDefault();
-    
+
     let fromX = parseInt(e.dataTransfer.getData(COORDS_KEY_X));
     let fromY = parseInt(e.dataTransfer.getData(COORDS_KEY_Y));
 
@@ -62,12 +62,12 @@
     }
 
     // standard move
-    let standardX = fromX === x + 1;
-    let standardY = fromY === y - 1 || fromY === y + 1;
+    let standardMoveX = fromX === x + 1;
+    let standardMoveY = fromY === y - 1 || fromY === y + 1;
 
     // standard jump
-    let jumpX = fromX === x + 2;
-    let jumpY = fromY === y - 2 || fromY === y + 2;
+    let standardJumpX = fromX === x + 2;
+    let standardJumpY = fromY === y - 2 || fromY === y + 2;
 
     // king move
     let kingMoveX = fromX === x - 1 || fromX === x + 1;
@@ -77,17 +77,16 @@
     let kingJumpX = fromX === x - 2 || fromX === x + 2;
     let kingJumpY = fromY === y - 2 || fromY === y + 2;
 
-    if (!isKing && spaceClear && standardX && standardY) {
+    if (
+      (!isKing && spaceClear && standardMoveX && standardMoveY) ||
+      (isKing && spaceClear && kingMoveX && kingMoveY)
+    ) {
       board[fromX][fromY] = board[x][y];
       board[x][y] = piece;
-    } else if (!isKing && spaceClear && jumpX && jumpY) {
-      board[fromX][fromY] = board[x][y];
-      board[x][y] = piece;
-      board[(fromX + x) / 2][(fromY + y) / 2] = BLANK_TILE;
-    } else if (isKing && spaceClear && kingMoveX && kingMoveY) {
-      board[fromX][fromY] = board[x][y];
-      board[x][y] = piece;
-    } else if (isKing && spaceClear && kingJumpX && kingJumpY) {
+    } else if (
+      (!isKing && spaceClear && standardJumpX && standardJumpY) ||
+      (isKing && spaceClear && kingJumpX && kingJumpY)
+    ) {
       board[fromX][fromY] = board[x][y];
       board[x][y] = piece;
       board[(fromX + x) / 2][(fromY + y) / 2] = BLANK_TILE;
