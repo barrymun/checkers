@@ -1,22 +1,21 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
+  import { onMount } from "svelte";
+  import { IS_PLAYER_1, IS_PLAYER_2 } from "../stores";
   import Tile from "./Tile.svelte";
   import CheckerWhite from "./CheckerWhite.svelte";
   import CheckerRed from "./CheckerRed.svelte";
+  import { DEFAULT_BOARD } from "../assets/constants";
 
-  // 0 == blank
-  // 1 == white
-  // 2 == red
-  let board: number[][] = [
-    [0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0],
-    [0, 1, 0, 1, 0, 1, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [2, 0, 2, 0, 2, 0, 2, 0],
-    [0, 2, 0, 2, 0, 2, 0, 2],
-    [2, 0, 2, 0, 2, 0, 2, 0],
-  ];
-  // console.log(board);
+  let board: number[][] = [];
+  const unsubPlayer1 = IS_PLAYER_1.subscribe(value => {
+    board = DEFAULT_BOARD;
+  });
+  const unsubPlayer2 = IS_PLAYER_2.subscribe(value => {
+    board = DEFAULT_BOARD.reverse();
+  });
+  onDestroy(unsubPlayer1);
+  onDestroy(unsubPlayer2);
 </script>
 
 <div class="flex justify-center content-center">
