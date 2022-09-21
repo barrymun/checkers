@@ -6,6 +6,7 @@
   import CheckerRed from "./CheckerRed.svelte";
   import {
     DEFAULT_BOARD,
+    BLANK_TILE,
     COORDS_KEY_X,
     COORDS_KEY_Y,
   } from "../assets/constants";
@@ -36,6 +37,7 @@
     // standard move
     let standardX = fromX === x + 1;
     let standardY = (fromY === y - 1 || fromY === y + 1);
+    let standardClear = board[x][y] === BLANK_TILE;
 
     // TODO:
     // capture move (+ all valid moves in a single movement)
@@ -43,7 +45,7 @@
     // TODO:
     // king move
     
-    if (standardX && standardY) {
+    if (standardX && standardY && standardClear) {
       let temp = board[fromX][fromY];
       board[fromX][fromY] = board[x][y];
       board[x][y] = temp;
