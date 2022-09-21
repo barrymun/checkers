@@ -13,21 +13,21 @@
     [2, 0, 2, 0, 2, 0, 2, 0],
   ];
   console.log(board);
+
+  const getTileClass = (x: number, y: number): string => {
+    if ((x % 2 == 0 && y % 2 == 0) || (x % 2 != 0 && y % 2 != 0))
+      return "bg-green-100";
+    else return "bg-green-300";
+  };
 </script>
 
 <div class="h-screen">
   {#each board as row, x}
-    <div class="grid gap-4 grid-cols-8 grid-rows-8 h-[calc(100%/8)]">
+    <div class="grid grid-cols-8 grid-rows-8 h-[calc(100%/8)]">
       {#each row as col, y}
-        {#if (x % 2 == 0 && y % 2 == 0) || (x % 2 != 0 && y % 2 != 0)}
-          <div class="bg-green-100">
-            {col}
-          </div>
-        {:else}
-          <div class="bg-green-300">
-            {col}
-          </div>
-        {/if}
+        <div class={getTileClass(x, y)}>
+          {col}
+        </div>
       {/each}
     </div>
   {/each}
