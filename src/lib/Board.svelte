@@ -1,5 +1,7 @@
 <script lang="ts">
   import Tile from "./Tile.svelte";
+  import CheckerWhite from "./CheckerWhite.svelte";
+  import CheckerRed from "./CheckerRed.svelte";
 
   // 0 == blank
   // 1 == white
@@ -27,7 +29,13 @@
   {#each board as row, x}
     <div class="grid grid-cols-8 grid-rows-8 h-[calc(100%/8)]">
       {#each row as col, y}
-        <Tile tileColor={getTileColor(x, y)} />
+        <Tile tileColor={getTileColor(x, y)}>
+          {#if col == 1}
+            <CheckerWhite />
+          {:else if col == 2}
+            <CheckerRed />
+          {/if}
+        </Tile>
       {/each}
     </div>
   {/each}
