@@ -15,9 +15,11 @@
   // subs
   let board: number[][] = [];
   const unsubPlayer1 = IS_PLAYER_1.subscribe((value) => {
+    console.log('HERE1')
     if (value) board = BOARD_PLAYER_1;
   });
   const unsubPlayer2 = IS_PLAYER_2.subscribe((value) => {
+    console.log('HERE2')
     if (value) board = BOARD_PLAYER_2;
   });
   onDestroy(unsubPlayer1);
