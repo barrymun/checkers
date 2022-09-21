@@ -1,6 +1,7 @@
 <script lang="ts">
+  import Board from "./lib/Board.svelte";
 </script>
 
 <main>
-  <h1 class="text-3xl font-bold underline">Hello world!</h1>
+  <Board />
 </main>
