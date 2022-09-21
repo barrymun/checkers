@@ -24,9 +24,9 @@
         {#each row as col, y}
           <Tile {x} {y}>
             {#if col == 1}
-              <CheckerWhite />
+              <CheckerWhite {x} {y} />
             {:else if col == 2}
-              <CheckerRed />
+              <CheckerRed {x} {y} />
             {/if}
           </Tile>
         {/each}

@@ -4,10 +4,14 @@
   import { CHECKER_WHITE } from "../assets/constants";
   import Checker from "./Checker.svelte";
 
+  // props
+  export let x: number;
+  export let y: number;
+
   // subs
   let isPlayer1: boolean = false;
   const unsubPlayer1 = IS_PLAYER_1.subscribe(value => isPlayer1 = value);
   onDestroy(unsubPlayer1);
 </script>
 
-<Checker type={CHECKER_WHITE} isDraggable={isPlayer1} />
+<Checker type={CHECKER_WHITE} isDraggable={isPlayer1} {x} {y} />

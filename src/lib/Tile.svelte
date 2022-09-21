@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { COORDS_KEY_X, COORDS_KEY_Y } from "../assets/constants";
+
   export let x: number;
   export let y: number;
 
@@ -14,6 +16,9 @@
 
   const onDrop = (e: DragEvent) => {
     e.preventDefault();
+    let fromX = parseInt(e.dataTransfer.getData(COORDS_KEY_X));
+    let fromY = parseInt(e.dataTransfer.getData(COORDS_KEY_Y));
+    console.log(fromX, fromY);
     console.log(x, y);
   };
 </script>
