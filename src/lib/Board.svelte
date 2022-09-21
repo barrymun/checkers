@@ -23,6 +23,7 @@
       return "bg-green-100";
     else return "bg-green-300";
   };
+
 </script>
 
 <div class="flex justify-center content-center">
