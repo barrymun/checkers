@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
-  import { onMount } from "svelte";
+  import { onDestroy } from "svelte";
   import { IS_PLAYER_1, IS_PLAYER_2 } from "../stores";
   import Tile from "./Tile.svelte";
   import CheckerWhite from "./CheckerWhite.svelte";
@@ -8,11 +7,11 @@
   import { DEFAULT_BOARD } from "../assets/constants";
 
   let board: number[][] = [];
-  const unsubPlayer1 = IS_PLAYER_1.subscribe(value => {
-    board = DEFAULT_BOARD;
+  const unsubPlayer1 = IS_PLAYER_1.subscribe((value) => {
+    board = DEFAULT_BOARD.slice().reverse();
   });
-  const unsubPlayer2 = IS_PLAYER_2.subscribe(value => {
-    board = DEFAULT_BOARD.reverse();
+  const unsubPlayer2 = IS_PLAYER_2.subscribe((value) => {
+    board = DEFAULT_BOARD;
   });
   onDestroy(unsubPlayer1);
   onDestroy(unsubPlayer2);
