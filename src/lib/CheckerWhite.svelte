@@ -6,10 +6,7 @@
 
   // subs
   let isPlayer1: boolean = false;
-  const unsubPlayer1 = IS_PLAYER_1.subscribe(value => {
-    isPlayer1 = value
-    console.log(isPlayer1)
-  });
+  const unsubPlayer1 = IS_PLAYER_1.subscribe(value => isPlayer1 = value);
   onDestroy(unsubPlayer1);
 </script>
 
