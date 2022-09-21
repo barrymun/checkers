@@ -28,6 +28,10 @@
     let fromY = parseInt(e.dataTransfer.getData(COORDS_KEY_Y));
     console.log(fromX, fromY);
     console.log(x, y);
+
+    // do nothing, player has not moved
+    // TODO: consider whether this should be considered touching a piece?
+    // if (fromX === x && fromY === y) return;
     
     // standard move
     let standardX = fromX === x + 1;
@@ -43,6 +47,8 @@
       let temp = board[fromX][fromY];
       board[fromX][fromY] = board[x][y];
       board[x][y] = temp;
+    } else {
+      return;
     }
     console.log(board)
   };
