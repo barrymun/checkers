@@ -11,7 +11,6 @@
 
   onMount(async () => {
     let player = assignPlayer();
-    console.log('X')
     if (player === PLAYER_1) IS_PLAYER_1.update((n) => true);
     else if (player === PLAYER_2) IS_PLAYER_2.update((n) => true);
   });
