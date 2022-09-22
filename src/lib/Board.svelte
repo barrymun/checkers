@@ -1,14 +1,12 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import { IS_PLAYER_1, IS_PLAYER_2 } from "../stores";
+  import { IS_PLAYER_1, IS_PLAYER_2, THE_BOARD } from "../stores";
   import Tile from "./Tile.svelte";
   import CheckerWhite from "./CheckerWhite.svelte";
   import CheckerRed from "./CheckerRed.svelte";
   import CheckerKingWhite from "./CheckerKingWhite.svelte";
   import CheckerKingRed from "./CheckerKingRed.svelte";
   import {
-    BOARD_PLAYER_1,
-    BOARD_PLAYER_2,
     BLANK_TILE,
     CHECKER_RED,
     CHECKER_WHITE,
@@ -21,21 +19,13 @@
   // subs
   let isPlayer1: boolean = false;
   let isPlayer2: boolean = false;
-  let board: number[][] = [];
-  const unsubPlayer1 = IS_PLAYER_1.subscribe((value) => {
-    if (value) {
-      isPlayer1 = true;
-      board = BOARD_PLAYER_1;
-    }
-  });
-  const unsubPlayer2 = IS_PLAYER_2.subscribe((value) => {
-    if (value) {
-      isPlayer2 = true;
-      board = BOARD_PLAYER_2;
-    }
-  });
+  let theBoard: number[][] = [];
+  const unsubPlayer1 = IS_PLAYER_1.subscribe((value) => (isPlayer1 = value));
+  const unsubPlayer2 = IS_PLAYER_2.subscribe((value) => (isPlayer2 = value));
+  const unsubTheBoard = THE_BOARD.subscribe((value) => (theBoard = value));
   onDestroy(unsubPlayer1);
   onDestroy(unsubPlayer2);
+  onDestroy(unsubTheBoard);
 
   //
   const getMoveOptions = (
@@ -101,8 +91,9 @@
     let canMove: boolean = true;
     let canJump: boolean = true;
 
+    console.log("A", fromX, fromY, x, y);
     while (canJump) {
-      console.log(fromX, fromY, x, y);
+      console.log("B", fromX, fromY, x, y);
 
       if (
         fromX < 0 ||
@@ -119,8 +110,8 @@
         break; // invalid space, player's turn over
       }
 
-      let piece = board[fromX][fromY];
-      let spaceClear = board[x][y] === BLANK_TILE;
+      let piece = theBoard[fromX][fromY];
+      let spaceClear = theBoard[x][y] === BLANK_TILE;
       let isKing = piece === CHECKER_KING_RED || piece === CHECKER_KING_WHITE;
 
       [canMove, canJump] = getMoveOptions(
@@ -134,53 +125,57 @@
       console.log(canMove, canJump);
 
       // alter the board
-
+      let newBoard = theBoard;
+      let newFromPiece = newBoard[x][y];
       if (canMove) {
-        board[fromX][fromY] = board[x][y];
-        board[x][y] = piece;
+        newBoard[fromX][fromY] = newFromPiece;
+        newBoard[x][y] = piece;
       } else if (canJump) {
-        board[fromX][fromY] = board[x][y];
-        board[x][y] = piece;
-        board[(fromX + x) / 2][(fromY + y) / 2] = BLANK_TILE;
+        newBoard[fromX][fromY] = newFromPiece;
+        newBoard[x][y] = piece;
+        newBoard[(fromX + x) / 2][(fromY + y) / 2] = BLANK_TILE;
       }
-
       // crown king (special case)
       let checkCanMakeKing = x === 0 && (canMove || canJump);
       if (checkCanMakeKing && spaceClear && !isKing) {
-        if (isPlayer1) board[x][y] = CHECKER_KING_RED;
-        else if (isPlayer2) board[x][y] = CHECKER_KING_WHITE;
+        if (isPlayer1) newBoard[x][y] = CHECKER_KING_RED;
+        else if (isPlayer2) newBoard[x][y] = CHECKER_KING_WHITE;
         canMove = false;
         canJump = false;
-        break; // player's turn is now over
       }
 
+      // set the board
+      THE_BOARD.set(newBoard);
+
       // moved only, cannot check for subsequent jump moves
-      if (canMove && !canJump) break;
+      if (!canMove && !canJump) break;
 
       // subsequent moves
       // "to" position becomes the "from" position
-      canMove = false;
       fromX = x;
       fromY = y;
       // check if a jump is possible
       const opponentMatchCondition = isPlayer1 ? CHECKER_WHITE : CHECKER_WHITE;
       try {
-        if (isKing && board[fromX + 1][fromY + 1] === opponentMatchCondition) {
+        if (
+          isKing &&
+          theBoard[fromX + 1][fromY + 1] === opponentMatchCondition
+        ) {
           console.log("HERE1", canMove, canJump);
           x = fromX + 2;
           y = fromY + 2;
         } else if (
           isKing &&
-          board[fromX + 1][fromY - 1] === opponentMatchCondition
+          theBoard[fromX + 1][fromY - 1] === opponentMatchCondition
         ) {
           console.log("HERE2", canMove, canJump);
           x = fromX + 2;
           y = fromY - 2;
-        } else if (board[fromX - 1][fromY + 1] === opponentMatchCondition) {
+        } else if (theBoard[fromX - 1][fromY + 1] === opponentMatchCondition) {
           console.log("HERE3", canMove, canJump);
           x = fromX - 2;
           y = fromY + 2;
-        } else if (board[fromX - 1][fromY - 1] === opponentMatchCondition) {
+        } else if (theBoard[fromX - 1][fromY - 1] === opponentMatchCondition) {
           console.log("HERE4", canMove, canJump);
           x = fromX - 2;
           y = fromY - 2;
@@ -202,10 +197,10 @@
 
 <div class="flex justify-center content-center">
   <div class="h-screen w-[100vh] p-2">
-    {#each board as row, x}
+    {#each theBoard as row, x}
       <div class="grid grid-cols-8 grid-rows-8 h-[calc(100%/8)]">
         {#each row as col, y}
-          <Tile onDrop={onDrop(x, y)} {x} {y}>
+          <Tile {onDrop} {x} {y}>
             {#if col === CHECKER_WHITE}
               <CheckerWhite isDraggable={isPlayer2} {x} {y} />
             {:else if col === CHECKER_RED}

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { PLAYER_1, PLAYER_2, WEBSOCKET_URI_DEV } from "./constants";
-  import { IS_PLAYER_1, IS_PLAYER_2 } from "./stores";
+  import { IS_PLAYER_1, IS_PLAYER_2, THE_BOARD } from "./stores";
+  import { BOARD_PLAYER_1 } from "./constants";
   import Board from "./lib/Board.svelte";
 
   let socket: WebSocket;
@@ -17,8 +17,9 @@
 
   function setPlayer() {
     // TODO: decide who the player is based on the order they appear in the room
-    IS_PLAYER_1.update((n) => true);
-    IS_PLAYER_2.update((n) => false);
+    IS_PLAYER_1.set(true);
+    IS_PLAYER_2.set(false);
+    THE_BOARD.set(BOARD_PLAYER_1);
   }
 
   onMount(async () => {

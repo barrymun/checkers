@@ -13,6 +13,6 @@
   };
 </script>
 
-<div class={tileColor} on:dragover={onDragOver} on:drop={onDrop}>
+<div class={tileColor} on:dragover={onDragOver} on:drop={onDrop(x ,y)}>
   <slot />
 </div>
