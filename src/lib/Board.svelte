@@ -118,8 +118,7 @@
     let fromY = parseInt(e.dataTransfer.getData(COORDS_KEY_Y));
 
     // do nothing, player has not moved
-    // TODO: consider whether this should be considered touching a piece?
-    // if (fromX === x && fromY === y) return;
+    if (fromX === x && fromY === y) return;
 
     let canMove: boolean,
       canJump: boolean = true;
