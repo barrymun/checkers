@@ -43,10 +43,11 @@
   onDestroy(unsubPlayer2Turn);
   onDestroy(unsubTheBoard);
 
-  //
+  // logic
+  // this variable must change based on the player turn
   $: opponentMatchCondition = isPlayer1Turn
-    ? CHECKER_WHITE
-    : CHECKER_RED;
+    ? CHECKER_WHITE || CHECKER_KING_WHITE
+    : CHECKER_RED || CHECKER_KING_RED;
 
   const getMoveOptions = (
     isKing: boolean,
