@@ -28,8 +28,10 @@
   onDestroy(unsubTheBoard);
 
   //
-  const opponentMatchCondition = isPlayer1 ? CHECKER_WHITE : CHECKER_WHITE;
-  
+  const opponentMatchCondition: number = isPlayer1
+    ? CHECKER_WHITE
+    : CHECKER_WHITE;
+
   const getMoveOptions = (
     isKing: boolean,
     spaceClear: boolean,
@@ -38,24 +40,36 @@
     toX: number,
     toY: number
   ): [boolean, boolean] => {
+    let tileMatchCondition: boolean;
+    try {
+      tileMatchCondition =
+        theBoard[(fromX + toX) / 2][(fromY + toY) / 2] ===
+        opponentMatchCondition;
+    } catch (e) {
+      tileMatchCondition = false;
+    }
+
     // standard move
     let standardMoveX = fromX === toX + 1;
     let standardMoveY = fromY === toY - 1 || fromY === toY + 1;
 
     // standard jump
-    let standardJumpX = fromX === toX + 2;
-    let standardJumpY = fromY === toY - 2 || fromY === toY + 2;
+    let standardJumpX = fromX === toX + 2 && tileMatchCondition;
+    let standardJumpY =
+      (fromY === toY - 2 || fromY === toY + 2) && tileMatchCondition;
 
     // king move
     let kingMoveX = fromX === toX - 1 || fromX === toX + 1;
     let kingMoveY = fromY === toY - 1 || fromY === toY + 1;
 
     // king jump
-    let kingJumpX = fromX === toX - 2 || fromX === toX + 2;
-    let kingJumpY = fromY === toY - 2 || fromY === toY + 2;
+    let kingJumpX =
+      (fromX === toX - 2 || fromX === toX + 2) && tileMatchCondition;
+    let kingJumpY =
+      (fromY === toY - 2 || fromY === toY + 2) && tileMatchCondition;
 
     let canMove: boolean,
-      canJump: boolean = true;
+      canJump: boolean = false;
 
     if (
       (!isKing && spaceClear && standardJumpX && standardJumpY) ||
@@ -122,7 +136,6 @@
         x,
         y
       );
-      console.log(canMove, canJump);
 
       // alter the board
       let newBoard = theBoard;
@@ -161,26 +174,21 @@
           isKing &&
           theBoard[fromX + 1][fromY + 1] === opponentMatchCondition
         ) {
-          console.log("HERE1", canMove, canJump);
           x = fromX + 2;
           y = fromY + 2;
         } else if (
           isKing &&
           theBoard[fromX + 1][fromY - 1] === opponentMatchCondition
         ) {
-          console.log("HERE2", canMove, canJump);
           x = fromX + 2;
           y = fromY - 2;
         } else if (theBoard[fromX - 1][fromY + 1] === opponentMatchCondition) {
-          console.log("HERE3", canMove, canJump);
           x = fromX - 2;
           y = fromY + 2;
         } else if (theBoard[fromX - 1][fromY - 1] === opponentMatchCondition) {
-          console.log("HERE4", canMove, canJump);
           x = fromX - 2;
           y = fromY - 2;
         } else {
-          console.log("HERE5");
           canMove = false;
           canJump = false;
         }
@@ -190,8 +198,6 @@
         canJump = false;
       }
     }
-
-    // console.log(board);
   };
 </script>
 
