@@ -45,7 +45,7 @@
 
   // logic
   // this variable must change based on the player turn
-  $: opponentMatchCondition = isPlayer1Turn
+  $: opponentJumpMatchCondition = isPlayer1Turn
     ? CHECKER_WHITE || CHECKER_KING_WHITE
     : CHECKER_RED || CHECKER_KING_RED;
 
@@ -61,7 +61,7 @@
     try {
       tileMatchCondition =
         theBoard[(fromX + toX) / 2][(fromY + toY) / 2] ===
-        opponentMatchCondition;
+        opponentJumpMatchCondition;
     } catch (e) {
       tileMatchCondition = false;
     }
@@ -189,20 +189,20 @@
       try {
         if (
           isKing &&
-          theBoard[fromX + 1][fromY + 1] === opponentMatchCondition
+          theBoard[fromX + 1][fromY + 1] === opponentJumpMatchCondition
         ) {
           x = fromX + 2;
           y = fromY + 2;
         } else if (
           isKing &&
-          theBoard[fromX + 1][fromY - 1] === opponentMatchCondition
+          theBoard[fromX + 1][fromY - 1] === opponentJumpMatchCondition
         ) {
           x = fromX + 2;
           y = fromY - 2;
-        } else if (theBoard[fromX - 1][fromY + 1] === opponentMatchCondition) {
+        } else if (theBoard[fromX - 1][fromY + 1] === opponentJumpMatchCondition) {
           x = fromX - 2;
           y = fromY + 2;
-        } else if (theBoard[fromX - 1][fromY - 1] === opponentMatchCondition) {
+        } else if (theBoard[fromX - 1][fromY - 1] === opponentJumpMatchCondition) {
           x = fromX - 2;
           y = fromY - 2;
         } else {
