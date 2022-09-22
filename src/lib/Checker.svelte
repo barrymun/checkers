@@ -6,6 +6,8 @@
     CHECKER_KING_RED,
     COORDS_KEY_X,
     COORDS_KEY_Y,
+    PLAYER_1_COLOR,
+    PLAYER_2_COLOR,
   } from "../constants";
 
   // props
@@ -18,16 +20,16 @@
 
   switch (type) {
     case CHECKER_WHITE:
-      checkerColor = "bg-white";
+      checkerColor = PLAYER_2_COLOR;
       break;
     case CHECKER_RED:
-      checkerColor = "bg-red-600";
+      checkerColor = PLAYER_1_COLOR;
       break;
     case CHECKER_KING_WHITE:
-      checkerColor = "bg-white";
+      checkerColor = PLAYER_2_COLOR;
       break;
     case CHECKER_KING_RED:
-      checkerColor = "bg-red-600";
+      checkerColor = PLAYER_1_COLOR;
       break;
     default:
       break;

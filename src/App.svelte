@@ -9,6 +9,7 @@
   } from "./stores";
   import { BOARD_PLAYER_1 } from "./constants";
   import Board from "./lib/Board.svelte";
+  import Info from "./lib/Info.svelte";
 
   let socket: WebSocket;
 
@@ -37,5 +38,10 @@
 </script>
 
 <main>
-  <Board />
+  <div class="flex justify-center content-center">
+    <div class="pt-2">
+      <Info />
+    </div>
+    <Board />
+  </div>
 </main>

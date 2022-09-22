@@ -5,6 +5,8 @@ export const CHECKER_KING_WHITE: number = 3;
 export const CHECKER_KING_RED: number = 4;
 export const PLAYER_1: number = 1;
 export const PLAYER_2: number = 2;
+export const PLAYER_1_COLOR: string = "bg-red-600";
+export const PLAYER_2_COLOR: string = "bg-slate-100";
 export const BOARD_PLAYER_1: number[][] = [
   [BLANK_TILE, CHECKER_WHITE, BLANK_TILE, CHECKER_WHITE, BLANK_TILE, CHECKER_WHITE, BLANK_TILE, CHECKER_WHITE],
   [CHECKER_WHITE, BLANK_TILE, CHECKER_WHITE, BLANK_TILE, CHECKER_WHITE, BLANK_TILE, CHECKER_WHITE, BLANK_TILE],
