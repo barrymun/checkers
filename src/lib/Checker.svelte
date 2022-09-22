@@ -48,7 +48,7 @@
 
 <div
   draggable={isDraggable}
-  class="{checkerColor} cursor-pointer rounded-full drop-shadow-lg p-[50%]"
+  class="{checkerColor} cursor-pointer rounded-full drop-shadow-lg p-[50%] relative"
   on:dragstart={onDragStart}
 >
   <slot />

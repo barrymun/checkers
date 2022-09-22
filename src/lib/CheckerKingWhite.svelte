@@ -10,7 +10,7 @@
 </script>
 
 <Checker type={CHECKER_KING_WHITE} {isDraggable} {x} {y}>
-  <div class="flex justify-center items-center h-full">
+  <div class="absolute top-[50%] left-[50%] translate-x-[-25%] translate-y-[-25%]">
     <img src={crown} alt="crown" class="h-[50%] w-[50%]" />
   </div>
 </Checker>
