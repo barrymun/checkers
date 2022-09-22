@@ -1,6 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { IS_PLAYER_1, IS_PLAYER_2, THE_BOARD } from "./stores";
+  import {
+    IS_PLAYER_1,
+    IS_PLAYER_2,
+    IS_PLAYER_1_TURN,
+    IS_PLAYER_2_TURN,
+    THE_BOARD,
+  } from "./stores";
   import { BOARD_PLAYER_1 } from "./constants";
   import Board from "./lib/Board.svelte";
 
@@ -19,6 +25,8 @@
     // TODO: decide who the player is based on the order they appear in the room
     IS_PLAYER_1.set(true);
     IS_PLAYER_2.set(false);
+    IS_PLAYER_1_TURN.set(true);
+    IS_PLAYER_2_TURN.set(false);
     THE_BOARD.set(BOARD_PLAYER_1);
   }
 

@@ -24,7 +24,7 @@
       checkerColor = "bg-red-600";
       break;
     case CHECKER_KING_WHITE:
-      checkerColor = "bg-slate-100";
+      checkerColor = "bg-blue-100";
       break;
     case CHECKER_KING_RED:
       checkerColor = "bg-red-900";

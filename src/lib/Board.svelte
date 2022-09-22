@@ -1,6 +1,12 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import { IS_PLAYER_1, IS_PLAYER_2, THE_BOARD } from "../stores";
+  import {
+    IS_PLAYER_1,
+    IS_PLAYER_2,
+    IS_PLAYER_1_TURN,
+    IS_PLAYER_2_TURN,
+    THE_BOARD,
+  } from "../stores";
   import Tile from "./Tile.svelte";
   import CheckerWhite from "./CheckerWhite.svelte";
   import CheckerRed from "./CheckerRed.svelte";
@@ -19,18 +25,28 @@
   // subs
   let isPlayer1: boolean = false;
   let isPlayer2: boolean = false;
+  let isPlayer1Turn: boolean = false;
+  let isPlayer2Turn: boolean = false;
   let theBoard: number[][] = [];
   const unsubPlayer1 = IS_PLAYER_1.subscribe((value) => (isPlayer1 = value));
   const unsubPlayer2 = IS_PLAYER_2.subscribe((value) => (isPlayer2 = value));
+  const unsubPlayer1Turn = IS_PLAYER_1_TURN.subscribe(
+    (value) => (isPlayer1Turn = value)
+  );
+  const unsubPlayer2Turn = IS_PLAYER_2_TURN.subscribe(
+    (value) => (isPlayer2Turn = value)
+  );
   const unsubTheBoard = THE_BOARD.subscribe((value) => (theBoard = value));
   onDestroy(unsubPlayer1);
   onDestroy(unsubPlayer2);
+  onDestroy(unsubPlayer1Turn);
+  onDestroy(unsubPlayer2Turn);
   onDestroy(unsubTheBoard);
 
   //
-  const opponentMatchCondition: number = isPlayer1
+  $: opponentMatchCondition = isPlayer1Turn
     ? CHECKER_WHITE
-    : CHECKER_WHITE;
+    : CHECKER_RED;
 
   const getMoveOptions = (
     isKing: boolean,
@@ -104,8 +120,8 @@
     // TODO: consider whether this should be considered touching a piece?
     // if (fromX === x && fromY === y) return;
 
-    let canMove: boolean = true;
-    let canJump: boolean = true;
+    let canMove: boolean,
+      canJump: boolean = true;
 
     while (canJump) {
       // check wall collision
@@ -151,8 +167,8 @@
       // crown king (special case)
       let checkCanMakeKing = x === 0 && (canMove || canJump);
       if (checkCanMakeKing && spaceClear && !isKing) {
-        if (isPlayer1) newBoard[x][y] = CHECKER_KING_RED;
-        else if (isPlayer2) newBoard[x][y] = CHECKER_KING_WHITE;
+        if (isPlayer1Turn) newBoard[x][y] = CHECKER_KING_RED;
+        else if (isPlayer2Turn) newBoard[x][y] = CHECKER_KING_WHITE;
         // mark turn ended
         canMove = false;
         canJump = false;
@@ -198,6 +214,29 @@
         canJump = false;
       }
     }
+
+    // change turns
+    if (isPlayer1Turn) {
+      console.log("p2_turn");
+      IS_PLAYER_1_TURN.set(false);
+      IS_PLAYER_2_TURN.set(true);
+      THE_BOARD.set(
+        theBoard
+          .slice(0)
+          .reverse()
+          .map((row) => row.slice(0).reverse())
+      );
+    } else if (isPlayer2Turn) {
+      console.log("p1_turn");
+      IS_PLAYER_1_TURN.set(true);
+      IS_PLAYER_2_TURN.set(false);
+      THE_BOARD.set(
+        theBoard
+          .slice(0)
+          .reverse()
+          .map((row) => row.slice(0).reverse())
+      );
+    }
   };
 </script>
 
@@ -208,13 +247,13 @@
         {#each row as col, y}
           <Tile {onDrop} {x} {y}>
             {#if col === CHECKER_WHITE}
-              <CheckerWhite isDraggable={isPlayer2} {x} {y} />
+              <CheckerWhite isDraggable={isPlayer2Turn} {x} {y} />
             {:else if col === CHECKER_RED}
-              <CheckerRed isDraggable={isPlayer1} {x} {y} />
+              <CheckerRed isDraggable={isPlayer1Turn} {x} {y} />
             {:else if col === CHECKER_KING_WHITE}
-              <CheckerKingWhite isDraggable={isPlayer2} {x} {y} />
+              <CheckerKingWhite isDraggable={isPlayer2Turn} {x} {y} />
             {:else if col === CHECKER_KING_RED}
-              <CheckerKingRed isDraggable={isPlayer1} {x} {y} />
+              <CheckerKingRed isDraggable={isPlayer1Turn} {x} {y} />
             {/if}
           </Tile>
         {/each}
