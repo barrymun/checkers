@@ -28,6 +28,8 @@
   onDestroy(unsubTheBoard);
 
   //
+  const opponentMatchCondition = isPlayer1 ? CHECKER_WHITE : CHECKER_WHITE;
+  
   const getMoveOptions = (
     isKing: boolean,
     spaceClear: boolean,
@@ -138,6 +140,7 @@
       if (checkCanMakeKing && spaceClear && !isKing) {
         if (isPlayer1) newBoard[x][y] = CHECKER_KING_RED;
         else if (isPlayer2) newBoard[x][y] = CHECKER_KING_WHITE;
+        // mark turn ended
         canMove = false;
         canJump = false;
       }
@@ -153,7 +156,6 @@
       fromX = x;
       fromY = y;
       // check if a jump is possible
-      const opponentMatchCondition = isPlayer1 ? CHECKER_WHITE : CHECKER_WHITE;
       try {
         if (
           isKing &&
