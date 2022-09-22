@@ -102,6 +102,7 @@
     let canJump: boolean = true;
 
     while (canJump) {
+      console.log(fromX, fromY, x, y);
       let piece = board[fromX][fromY];
       let spaceClear = board[x][y] === BLANK_TILE;
       let isKing = piece === CHECKER_KING_RED || piece === CHECKER_KING_WHITE;
@@ -126,7 +127,7 @@
       }
 
       // crown king (special case)
-      let checkCanMakeKing = (x === 0 && canMove);
+      let checkCanMakeKing = x === 0 && canMove;
       if (checkCanMakeKing && spaceClear && !isKing) {
         if (isPlayer1) board[x][y] = CHECKER_KING_RED;
         else if (isPlayer2) board[x][y] = CHECKER_KING_WHITE;
@@ -142,41 +143,41 @@
       // "to" position becomes the "from" position
       fromX = x;
       fromY = y;
-      // calculate the new "to" position
-      // let count: number = 0,
-      //   xCount: number = 2,
-      //   yCount: number = 2;
-      // while (count < 4) {
-        
-      //   if (count == 2) {
-      //     console.log("HERE");
-      //     xCount -= 1;
-      //     yCount -= 1;
-      //   }
-      //   console.log(count, xCount, yCount);
-
-      //   [canMove, canJump] = getMoveOptions(
-      //     isKing,
-      //     spaceClear,
-      //     fromX,
-      //     fromY,
-      //     x + xCount,
-      //     y + yCount
-      //   );
-      //   console.log(canMove, canJump);
-      //   if (canMove) {
-      //     // we have the next moveset, set new x and y coords
-      //     console.log("BEFORE", x, y);
-      //     x += xCount;
-      //     y += yCount;
-      //     console.log("AFTER", x, y);
-      //     break; 
-      //   }
-      //   // next
-      //   xCount *= -1;
-      //   yCount *= -1;
-      //   count += 1;
+      // check if a jump is possible
+      // if (
+      //   (isKing && board[fromX+1][fromY+1] === CHECKER_RED) ||
+      //   (isKing && board[fromX+1][fromY-1] === CHECKER_RED) ||
+      //   (board[fromX-1][fromY+1] === CHECKER_RED) ||
+      //   (board[fromX-1][fromY-1] === CHECKER_RED)
+      // ) {
+      //   canMove = true;
+      //   canJump = true;
+      // } else {
+      //   canMove = false;
+      //   canJump = false;
       // }
+
+      const opponentMatchCondition = isPlayer1 ? CHECKER_WHITE : CHECKER_WHITE;
+      if (isKing && board[fromX + 1][fromY + 1] === opponentMatchCondition) {
+        x = fromX + 2;
+        y = fromY + 2;
+      } else if (
+        isKing &&
+        board[fromX + 1][fromY - 1] === opponentMatchCondition
+      ) {
+        x = fromX + 2;
+        y = fromY - 2;
+      } else if (board[fromX - 1][fromY + 1] === opponentMatchCondition) {
+        console.log("HERE", canMove, canJump);
+        x = fromX - 2;
+        y = fromY + 2;
+      } else if (board[fromX - 1][fromY - 1] === opponentMatchCondition) {
+        x = fromX - 2;
+        y = fromY - 2;
+      } else {
+        canMove = false;
+        canJump = false;
+      }
     }
 
     // console.log(board);
