@@ -99,17 +99,6 @@
       let spaceClear = board[x][y] === BLANK_TILE;
       let isKing = piece === CHECKER_KING_RED || piece === CHECKER_KING_WHITE;
 
-      // crown king (special case)
-      let checkCanMakeKing = x === 0;
-      if (checkCanMakeKing && spaceClear && !isKing) {
-        board[fromX][fromY] = board[x][y];
-        if (isPlayer1) board[x][y] = CHECKER_KING_RED;
-        else if (isPlayer2) board[x][y] = CHECKER_KING_WHITE;
-        canMove = false;
-        canJump = false;
-        break; // player's turn is now over
-      }
-
       let [
         standardMoveX,
         standardMoveY,
@@ -146,6 +135,17 @@
         if (canJump) {
           board[(fromX + x) / 2][(fromY + y) / 2] = BLANK_TILE;
         }
+      }
+
+      // crown king (special case)
+      let checkCanMakeKing = x === 0;
+      if (checkCanMakeKing && spaceClear && !isKing) {
+        // board[fromX][fromY] = board[x][y];
+        if (isPlayer1) board[x][y] = CHECKER_KING_RED;
+        else if (isPlayer2) board[x][y] = CHECKER_KING_WHITE;
+        canMove = false;
+        canJump = false;
+        break; // player's turn is now over
       }
 
       // "to" position becomes the "from" position
