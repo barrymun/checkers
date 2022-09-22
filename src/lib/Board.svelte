@@ -91,10 +91,8 @@
     let canMove: boolean = true;
     let canJump: boolean = true;
 
-    console.log("A", fromX, fromY, x, y);
     while (canJump) {
-      console.log("B", fromX, fromY, x, y);
-
+      // check wall collision
       if (
         fromX < 0 ||
         fromX > 7 ||
