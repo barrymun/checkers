@@ -24,10 +24,10 @@
       checkerColor = "bg-red-600";
       break;
     case CHECKER_KING_WHITE:
-      checkerColor = "bg-blue-100";
+      checkerColor = "bg-white";
       break;
     case CHECKER_KING_RED:
-      checkerColor = "bg-red-900";
+      checkerColor = "bg-red-600";
       break;
     default:
       break;
@@ -48,4 +48,6 @@
   draggable={isDraggable}
   class="{checkerColor} cursor-pointer w-full h-full rounded-full"
   on:dragstart={onDragStart}
-/>
+>
+  <slot />
+</div>
