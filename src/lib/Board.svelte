@@ -218,7 +218,6 @@
 
     // change turns
     if (isPlayer1Turn) {
-      console.log("p2_turn");
       IS_PLAYER_1_TURN.set(false);
       IS_PLAYER_2_TURN.set(true);
       THE_BOARD.set(
@@ -228,7 +227,6 @@
           .map((row) => row.slice(0).reverse())
       );
     } else if (isPlayer2Turn) {
-      console.log("p1_turn");
       IS_PLAYER_1_TURN.set(true);
       IS_PLAYER_2_TURN.set(false);
       THE_BOARD.set(
