@@ -10,6 +10,7 @@
   import { BOARD_PLAYER_1 } from "./constants";
   import Board from "./lib/Board.svelte";
   import Info from "./lib/Info.svelte";
+  import GitHubButton from "./lib/GitHubButton.svelte";
 
   let socket: WebSocket;
 
@@ -44,4 +45,6 @@
     </div>
     <Board />
   </div>
+
+  <GitHubButton />
 </main>

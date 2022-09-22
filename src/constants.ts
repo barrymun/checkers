@@ -1,3 +1,6 @@
+export const REPO_URI: string = "https://github.com/barrymun/checkers";
+export const URI_TARGET: string = "_blank";
+export const URI_REL: string = "noopener noreferrer";
 export const BLANK_TILE: number = 0;
 export const CHECKER_WHITE: number = 1;
 export const CHECKER_RED: number = 2;
