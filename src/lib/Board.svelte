@@ -70,7 +70,7 @@
       (isKing && spaceClear && kingJumpX && kingJumpY)
     ) {
       // check jump first
-      canMove = true;
+      canMove = false;
       canJump = true;
     } else if (
       (!isKing && spaceClear && standardMoveX && standardMoveY) ||
@@ -103,6 +103,22 @@
 
     while (canJump) {
       console.log(fromX, fromY, x, y);
+
+      if (
+        fromX < 0 ||
+        fromX > 7 ||
+        fromY < 0 ||
+        fromY > 7 ||
+        x < 0 ||
+        x > 7 ||
+        y < 0 ||
+        y > 7
+      ) {
+        canMove = false;
+        canJump = false;
+        break; // invalid space, player's turn over
+      }
+
       let piece = board[fromX][fromY];
       let spaceClear = board[x][y] === BLANK_TILE;
       let isKing = piece === CHECKER_KING_RED || piece === CHECKER_KING_WHITE;
@@ -115,19 +131,21 @@
         x,
         y
       );
+      console.log(canMove, canJump);
 
       // alter the board
+
       if (canMove) {
         board[fromX][fromY] = board[x][y];
         board[x][y] = piece;
-
-        if (canJump) {
-          board[(fromX + x) / 2][(fromY + y) / 2] = BLANK_TILE;
-        }
+      } else if (canJump) {
+        board[fromX][fromY] = board[x][y];
+        board[x][y] = piece;
+        board[(fromX + x) / 2][(fromY + y) / 2] = BLANK_TILE;
       }
 
       // crown king (special case)
-      let checkCanMakeKing = x === 0 && canMove;
+      let checkCanMakeKing = x === 0 && (canMove || canJump);
       if (checkCanMakeKing && spaceClear && !isKing) {
         if (isPlayer1) board[x][y] = CHECKER_KING_RED;
         else if (isPlayer2) board[x][y] = CHECKER_KING_WHITE;
@@ -141,40 +159,38 @@
 
       // subsequent moves
       // "to" position becomes the "from" position
+      canMove = false;
       fromX = x;
       fromY = y;
       // check if a jump is possible
-      // if (
-      //   (isKing && board[fromX+1][fromY+1] === CHECKER_RED) ||
-      //   (isKing && board[fromX+1][fromY-1] === CHECKER_RED) ||
-      //   (board[fromX-1][fromY+1] === CHECKER_RED) ||
-      //   (board[fromX-1][fromY-1] === CHECKER_RED)
-      // ) {
-      //   canMove = true;
-      //   canJump = true;
-      // } else {
-      //   canMove = false;
-      //   canJump = false;
-      // }
-
       const opponentMatchCondition = isPlayer1 ? CHECKER_WHITE : CHECKER_WHITE;
-      if (isKing && board[fromX + 1][fromY + 1] === opponentMatchCondition) {
-        x = fromX + 2;
-        y = fromY + 2;
-      } else if (
-        isKing &&
-        board[fromX + 1][fromY - 1] === opponentMatchCondition
-      ) {
-        x = fromX + 2;
-        y = fromY - 2;
-      } else if (board[fromX - 1][fromY + 1] === opponentMatchCondition) {
-        console.log("HERE", canMove, canJump);
-        x = fromX - 2;
-        y = fromY + 2;
-      } else if (board[fromX - 1][fromY - 1] === opponentMatchCondition) {
-        x = fromX - 2;
-        y = fromY - 2;
-      } else {
+      try {
+        if (isKing && board[fromX + 1][fromY + 1] === opponentMatchCondition) {
+          console.log("HERE1", canMove, canJump);
+          x = fromX + 2;
+          y = fromY + 2;
+        } else if (
+          isKing &&
+          board[fromX + 1][fromY - 1] === opponentMatchCondition
+        ) {
+          console.log("HERE2", canMove, canJump);
+          x = fromX + 2;
+          y = fromY - 2;
+        } else if (board[fromX - 1][fromY + 1] === opponentMatchCondition) {
+          console.log("HERE3", canMove, canJump);
+          x = fromX - 2;
+          y = fromY + 2;
+        } else if (board[fromX - 1][fromY - 1] === opponentMatchCondition) {
+          console.log("HERE4", canMove, canJump);
+          x = fromX - 2;
+          y = fromY - 2;
+        } else {
+          console.log("HERE5");
+          canMove = false;
+          canJump = false;
+        }
+      } catch (err) {
+        console.log(err);
         canMove = false;
         canJump = false;
       }
