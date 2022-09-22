@@ -8,4 +8,4 @@
   export let y: number;
 </script>
 
-<Checker type={CHECKER_KING_WHITE} isDraggable={isDraggable} {x} {y} />
+<Checker type={CHECKER_KING_WHITE} {isDraggable} {x} {y} />
