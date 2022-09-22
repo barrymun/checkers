@@ -38,6 +38,49 @@
   onDestroy(unsubPlayer2);
 
   //
+  const getMoveset = (
+    fromX: number,
+    fromY: number,
+    toX: number,
+    toY: number
+  ): [
+    boolean,
+    boolean,
+    boolean,
+    boolean,
+    boolean,
+    boolean,
+    boolean,
+    boolean
+  ] => {
+    // standard move
+    let standardMoveX = fromX === toX + 1;
+    let standardMoveY = fromY === toY - 1 || fromY === toY + 1;
+
+    // standard jump
+    let standardJumpX = fromX === toX + 2;
+    let standardJumpY = fromY === toY - 2 || fromY === toY + 2;
+
+    // king move
+    let kingMoveX = fromX === toX - 1 || fromX === toX + 1;
+    let kingMoveY = fromY === toY - 1 || fromY === toY + 1;
+
+    // king jump
+    let kingJumpX = fromX === toX - 2 || fromX === toX + 2;
+    let kingJumpY = fromY === toY - 2 || fromY === toY + 2;
+
+    return [
+      standardMoveX,
+      standardMoveY,
+      standardJumpX,
+      standardJumpY,
+      kingMoveX,
+      kingMoveY,
+      kingJumpX,
+      kingJumpY,
+    ];
+  };
+
   const onDrop = (x: number, y: number) => (e: DragEvent) => {
     e.preventDefault();
 
@@ -48,52 +91,83 @@
     // TODO: consider whether this should be considered touching a piece?
     // if (fromX === x && fromY === y) return;
 
-    let piece = board[fromX][fromY];
-    let spaceClear = board[x][y] === BLANK_TILE;
-    let isKing = piece === CHECKER_KING_RED || piece === CHECKER_KING_WHITE;
+    let canMove: boolean = true;
+    let canJump: boolean = true;
 
-    // make king (special case)
-    let checkCanMakeKing = x === 0;
-    if (checkCanMakeKing && spaceClear && !isKing) {
-      board[fromX][fromY] = board[x][y];
-      if (isPlayer1) board[x][y] = CHECKER_KING_RED;
-      else if (isPlayer2) board[x][y] = CHECKER_KING_WHITE;
-      return;
+    while (canJump) {
+      let piece = board[fromX][fromY];
+      let spaceClear = board[x][y] === BLANK_TILE;
+      let isKing = piece === CHECKER_KING_RED || piece === CHECKER_KING_WHITE;
+
+      // crown king (special case)
+      let checkCanMakeKing = x === 0;
+      if (checkCanMakeKing && spaceClear && !isKing) {
+        board[fromX][fromY] = board[x][y];
+        if (isPlayer1) board[x][y] = CHECKER_KING_RED;
+        else if (isPlayer2) board[x][y] = CHECKER_KING_WHITE;
+        canMove = false;
+        canJump = false;
+        break; // player's turn is now over
+      }
+
+      let [
+        standardMoveX,
+        standardMoveY,
+        standardJumpX,
+        standardJumpY,
+        kingMoveX,
+        kingMoveY,
+        kingJumpX,
+        kingJumpY,
+      ] = getMoveset(fromX, fromY, x, y);
+
+      if (
+        (!isKing && spaceClear && standardJumpX && standardJumpY) ||
+        (isKing && spaceClear && kingJumpX && kingJumpY)
+      ) {
+        canMove = true;
+        canJump = true;
+      } else if (
+        (!isKing && spaceClear && standardMoveX && standardMoveY) ||
+        (isKing && spaceClear && kingMoveX && kingMoveY)
+      ) {
+        canMove = true;
+        canJump = false;
+      } else {
+        canMove = false;
+        canJump = false;
+        break;
+      }
+
+      if (canMove) {
+        board[fromX][fromY] = board[x][y];
+        board[x][y] = piece;
+
+        if (canJump) {
+          board[(fromX + x) / 2][(fromY + y) / 2] = BLANK_TILE;
+        }
+      }
+
+      // "to" position becomes the "from" position
+      fromX = x;
+      fromY = y;
+      //
+      [
+        standardMoveX,
+        standardMoveY,
+        standardJumpX,
+        standardJumpY,
+        kingMoveX,
+        kingMoveY,
+        kingJumpX,
+        kingJumpY,
+      ] = getMoveset(fromX, fromY, x, y);
+      if (isKing) {
+      } else {
+      }
     }
 
-    // standard move
-    let standardMoveX = fromX === x + 1;
-    let standardMoveY = fromY === y - 1 || fromY === y + 1;
-
-    // standard jump
-    let standardJumpX = fromX === x + 2;
-    let standardJumpY = fromY === y - 2 || fromY === y + 2;
-
-    // king move
-    let kingMoveX = fromX === x - 1 || fromX === x + 1;
-    let kingMoveY = fromY === y - 1 || fromY === y + 1;
-
-    // king jump
-    let kingJumpX = fromX === x - 2 || fromX === x + 2;
-    let kingJumpY = fromY === y - 2 || fromY === y + 2;
-
-    if (
-      (!isKing && spaceClear && standardMoveX && standardMoveY) ||
-      (isKing && spaceClear && kingMoveX && kingMoveY)
-    ) {
-      board[fromX][fromY] = board[x][y];
-      board[x][y] = piece;
-    } else if (
-      (!isKing && spaceClear && standardJumpX && standardJumpY) ||
-      (isKing && spaceClear && kingJumpX && kingJumpY)
-    ) {
-      board[fromX][fromY] = board[x][y];
-      board[x][y] = piece;
-      board[(fromX + x) / 2][(fromY + y) / 2] = BLANK_TILE;
-    } else {
-      return;
-    }
-    console.log(board);
+    // console.log(board);
   };
 </script>
 
