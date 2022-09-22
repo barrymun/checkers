@@ -38,21 +38,14 @@
   onDestroy(unsubPlayer2);
 
   //
-  const getMoveset = (
+  const getMoveOptions = (
+    isKing: boolean,
+    spaceClear: boolean,
     fromX: number,
     fromY: number,
     toX: number,
     toY: number
-  ): [
-    boolean,
-    boolean,
-    boolean,
-    boolean,
-    boolean,
-    boolean,
-    boolean,
-    boolean
-  ] => {
+  ): [boolean, boolean] => {
     // standard move
     let standardMoveX = fromX === toX + 1;
     let standardMoveY = fromY === toY - 1 || fromY === toY + 1;
@@ -69,16 +62,30 @@
     let kingJumpX = fromX === toX - 2 || fromX === toX + 2;
     let kingJumpY = fromY === toY - 2 || fromY === toY + 2;
 
-    return [
-      standardMoveX,
-      standardMoveY,
-      standardJumpX,
-      standardJumpY,
-      kingMoveX,
-      kingMoveY,
-      kingJumpX,
-      kingJumpY,
-    ];
+    let canMove: boolean,
+      canJump: boolean = true;
+
+    if (
+      (!isKing && spaceClear && standardJumpX && standardJumpY) ||
+      (isKing && spaceClear && kingJumpX && kingJumpY)
+    ) {
+      // check jump first
+      canMove = true;
+      canJump = true;
+    } else if (
+      (!isKing && spaceClear && standardMoveX && standardMoveY) ||
+      (isKing && spaceClear && kingMoveX && kingMoveY)
+    ) {
+      // check move available
+      canMove = true;
+      canJump = false;
+    } else {
+      // default
+      canMove = false;
+      canJump = false;
+    }
+
+    return [canMove, canJump];
   };
 
   const onDrop = (x: number, y: number) => (e: DragEvent) => {
@@ -99,35 +106,16 @@
       let spaceClear = board[x][y] === BLANK_TILE;
       let isKing = piece === CHECKER_KING_RED || piece === CHECKER_KING_WHITE;
 
-      let [
-        standardMoveX,
-        standardMoveY,
-        standardJumpX,
-        standardJumpY,
-        kingMoveX,
-        kingMoveY,
-        kingJumpX,
-        kingJumpY,
-      ] = getMoveset(fromX, fromY, x, y);
+      [canMove, canJump] = getMoveOptions(
+        isKing,
+        spaceClear,
+        fromX,
+        fromY,
+        x,
+        y
+      );
 
-      if (
-        (!isKing && spaceClear && standardJumpX && standardJumpY) ||
-        (isKing && spaceClear && kingJumpX && kingJumpY)
-      ) {
-        canMove = true;
-        canJump = true;
-      } else if (
-        (!isKing && spaceClear && standardMoveX && standardMoveY) ||
-        (isKing && spaceClear && kingMoveX && kingMoveY)
-      ) {
-        canMove = true;
-        canJump = false;
-      } else {
-        canMove = false;
-        canJump = false;
-        break;
-      }
-
+      // alter the board
       if (canMove) {
         board[fromX][fromY] = board[x][y];
         board[x][y] = piece;
@@ -138,9 +126,8 @@
       }
 
       // crown king (special case)
-      let checkCanMakeKing = x === 0;
+      let checkCanMakeKing = (x === 0 && canMove);
       if (checkCanMakeKing && spaceClear && !isKing) {
-        // board[fromX][fromY] = board[x][y];
         if (isPlayer1) board[x][y] = CHECKER_KING_RED;
         else if (isPlayer2) board[x][y] = CHECKER_KING_WHITE;
         canMove = false;
@@ -148,23 +135,48 @@
         break; // player's turn is now over
       }
 
+      // moved only, cannot check for subsequent jump moves
+      if (canMove && !canJump) break;
+
+      // subsequent moves
       // "to" position becomes the "from" position
       fromX = x;
       fromY = y;
-      //
-      [
-        standardMoveX,
-        standardMoveY,
-        standardJumpX,
-        standardJumpY,
-        kingMoveX,
-        kingMoveY,
-        kingJumpX,
-        kingJumpY,
-      ] = getMoveset(fromX, fromY, x, y);
-      if (isKing) {
-      } else {
-      }
+      // calculate the new "to" position
+      // let count: number = 0,
+      //   xCount: number = 2,
+      //   yCount: number = 2;
+      // while (count < 4) {
+        
+      //   if (count == 2) {
+      //     console.log("HERE");
+      //     xCount -= 1;
+      //     yCount -= 1;
+      //   }
+      //   console.log(count, xCount, yCount);
+
+      //   [canMove, canJump] = getMoveOptions(
+      //     isKing,
+      //     spaceClear,
+      //     fromX,
+      //     fromY,
+      //     x + xCount,
+      //     y + yCount
+      //   );
+      //   console.log(canMove, canJump);
+      //   if (canMove) {
+      //     // we have the next moveset, set new x and y coords
+      //     console.log("BEFORE", x, y);
+      //     x += xCount;
+      //     y += yCount;
+      //     console.log("AFTER", x, y);
+      //     break; 
+      //   }
+      //   // next
+      //   xCount *= -1;
+      //   yCount *= -1;
+      //   count += 1;
+      // }
     }
 
     // console.log(board);
